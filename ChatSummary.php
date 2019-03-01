@@ -150,7 +150,7 @@ function getPosts() {
         $CHAT_SUMMARY_MAIL_RECIPIENT,
         "Chat Summary",
         implode("\r\n", $mail_body),
-        "From: {$CHAT_SUMMARY_MAIL_FROM}",
+        "From: {$CHAT_SUMMARY_MAIL_FROM}\r\nContent-Type: text/plain",
         "-f{$CHAT_SUMMARY_MAIL_FROM}"
         ) === FALSE) {
             return "Error sending mail.";
