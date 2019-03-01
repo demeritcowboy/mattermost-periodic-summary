@@ -1,0 +1,18 @@
+<?php
+
+$CHAT_SUMMARY_URL = 'https://chat.civicrm.org';
+
+// Your team's name. If you don't know it it will be in the url when you visit the actual site in a browser.
+$CHAT_SUMMARY_TEAM_NAME = 'civicrm';
+
+// Retrieve posts created after this many seconds ago. If you're running from cron it would make sense for this to match how often you run the script.
+$CHAT_SUMMARY_CUTOFF = 3600;
+
+// Replace with your actual login_id and password.
+$CHAT_SUMMARY_LOGIN_STRING ='{"login_id":"your_email@example.com","password":"your_password"}';
+
+// An email address that won't appear to be a spam sender when the email is sent from the server where this script is running.
+$CHAT_SUMMARY_MAIL_FROM = 'your_email@example.com';
+
+// Email recipient. Can separate multiple with commas.
+$CHAT_SUMMARY_MAIL_RECIPIENT = 'your_email@example.com';
