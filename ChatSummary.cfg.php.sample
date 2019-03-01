@@ -6,6 +6,7 @@ $CHAT_SUMMARY_URL = 'https://chat.civicrm.org';
 $CHAT_SUMMARY_TEAM_NAME = 'civicrm';
 
 // Retrieve posts created after this many seconds ago. If you're running from cron it would make sense for this to match how often you run the script.
+// Note this is just a default. It will try to use the last runtime regardless of this setting.
 $CHAT_SUMMARY_CUTOFF = 3600;
 
 // Replace with your actual login_id and password.
@@ -16,3 +17,6 @@ $CHAT_SUMMARY_MAIL_FROM = 'your_email@example.com';
 
 // Email recipient. Can separate multiple with commas.
 $CHAT_SUMMARY_MAIL_RECIPIENT = 'your_email@example.com';
+
+// Cache directory to store data between runs
+$CHAT_SUMMARY_CACHE_DIR = '/usr/local/tmp/chat_summary_cache';

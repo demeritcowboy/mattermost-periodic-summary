@@ -2,7 +2,6 @@
 
 // TODO:
 // Error handling is not best practice.
-// Could probably cache user id => name mappings between runs too and store in a file. I doubt they change.
 
 require_once 'ChatSummary.cfg.php';
 
@@ -81,7 +80,6 @@ function getPosts() {
 
     // Get list of channels
     curl_setopt_array($curl, array(
-        CURLOPT_HEADER => false,
         CURLOPT_URL => "{$CHAT_SUMMARY_URL}/api/v4/users/{$user_id}/teams/{$team_id}/channels",
         CURLOPT_HTTPHEADER => array(
             'Content-Type: application/json',
@@ -96,9 +94,16 @@ function getPosts() {
         return "Can't get list of channels.";
     }
 
-    $cutoff = (time() - $CHAT_SUMMARY_CUTOFF) * 1000; // they want microseconds included
+    // Set defaults
+    $cutoff = time() - $CHAT_SUMMARY_CUTOFF;
     $user_id_cache = array();
     $mail_body = array();
+
+    // If present, load from cache instead.
+    readCache($cutoff, $user_id_cache);
+
+    // They want microseconds included.
+    $cutoff *= 1000;
 
     // Loop thru channels
     foreach ($response_arr as $channel) {
@@ -159,6 +164,7 @@ function getPosts() {
     return '';
 }
 
+// Map a chat user id to name
 function getUsername($curl, $auth_token, $id) {
     global $CHAT_SUMMARY_URL;
     curl_setopt_array($curl, array(
@@ -177,5 +183,42 @@ function getUsername($curl, $auth_token, $id) {
     return null;
 }
 
+// If present, load from cache from last run.
+function readCache(&$cutoff, &$user_id_cache) {
+    global $CHAT_SUMMARY_CACHE_DIR;
+    $filename = rtrim($CHAT_SUMMARY_CACHE_DIR, "\\/") . '/chat_summary_cache';
+    if (file_exists($filename)) {
+        $fp = fopen($filename, 'r');
+        if ($fp) {
+            // first row is the last run timestamp
+            $row = fgetcsv($fp);
+            $cutoff = $row[0];
+
+            // read in id=>name mappings
+            while (($row = fgetcsv($fp)) !== FALSE) {
+                $user_id_cache[$row[0]] = $row[1];
+            }
+            fclose($fp);
+        }
+    }
+}
+
+// Overwrite the cache with updated values
+function setCache($user_id_cache) {
+    global $CHAT_SUMMARY_CACHE_DIR;
+    $filename = rtrim($CHAT_SUMMARY_CACHE_DIR, "\\/") . '/chat_summary_cache';
+    $fp = fopen($filename, 'w');
+    if ($fp) {
+        fputcsv($fp, array(time()));
+
+        foreach ($user_id_cache as $id => $name) {
+            fputcsv($fp, array($id, $name));
+        }
+        fclose($fp);
+    }
+}
+
 $err = getPosts();
-echo "\n$err\n";
+if (!empty($err)) {
+    echo "\n$err\n";
+}
