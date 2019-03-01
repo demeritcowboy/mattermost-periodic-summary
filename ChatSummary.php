@@ -161,6 +161,7 @@ function getPosts() {
             return "Error sending mail.";
     }
 
+    setCache($user_id_cache);
     return '';
 }
 
