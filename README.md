@@ -5,6 +5,7 @@ Get a periodic summary of posts from a mattermost chat site.
 1. git clone or download.
 2. Copy ChatSummary.cfg.php.sample to ChatSummary.cfg.php.
 3. Edit ChatSummary.cfg.php as desired.
+4. Since it contains password information, secure the file as necessary.
 
 # UPGRADING
 1. Open the file version.txt using vim. (Other text editors should work but are not officially supported.)
