@@ -18,5 +18,6 @@ $CHAT_SUMMARY_MAIL_FROM = 'your_email@example.com';
 // Email recipient. Can separate multiple with commas.
 $CHAT_SUMMARY_MAIL_RECIPIENT = 'your_email@example.com';
 
-// Cache directory to store data between runs
+// Cache directory to store data between runs.
+// There's nothing sensitive in here or that needs its own dedicated folder. It could just be /tmp.
 $CHAT_SUMMARY_CACHE_DIR = '/usr/local/tmp/chat_summary_cache';

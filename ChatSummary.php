@@ -5,8 +5,11 @@
 
 require_once 'ChatSummary.cfg.php';
 
+$cookie_file_path = null;
+
 function getPosts() {
     global $CHAT_SUMMARY_URL, $CHAT_SUMMARY_TEAM_NAME, $CHAT_SUMMARY_LOGIN_STRING, $CHAT_SUMMARY_CUTOFF, $CHAT_SUMMARY_MAIL_FROM, $CHAT_SUMMARY_MAIL_RECIPIENT;
+    global $cookie_file_path;
 
     $curl = curl_init();
     $cookie_file_path = tempnam(sys_get_temp_dir(), 'coo');
@@ -222,4 +225,8 @@ function setCache($user_id_cache) {
 $err = getPosts();
 if (!empty($err)) {
     echo "\n$err\n";
+}
+// clean up cookie jar
+if (!empty($cookie_file_path)) {
+    unlink($cookie_file_path);
 }
