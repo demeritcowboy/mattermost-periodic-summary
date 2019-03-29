@@ -111,7 +111,7 @@ function getPosts() {
     // Loop thru channels
     foreach ($response_arr as $channel) {
         curl_setopt_array($curl, array(
-            CURLOPT_URL => "{$CHAT_SUMMARY_URL}/api/v4/channels/{$channel['id']}/posts?since={$cutoff}",
+            CURLOPT_URL => "{$CHAT_SUMMARY_URL}/api/v4/channels/{$channel['id']}/posts?per_page=200&since={$cutoff}",
             CURLOPT_HTTPHEADER => array(
                 'Content-Type: application/json',
                 "Authorization: Bearer {$matches[1]}",
