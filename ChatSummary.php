@@ -138,6 +138,10 @@ function getPosts() {
 
             // Loop through posts
             foreach ($posts_arr['posts'] as $post) {
+                if (!empty($post['delete_at'])) {
+                    // edits have their earlier revisions marked as deleted, as well as actual deleted ones, so skip both.
+                    continue;
+                }
                 if (!isset($user_id_cache[$post['user_id']])) {
                     $username = getUsername($curl, $matches[1], $post['user_id']);
                     if (empty($username)) {
