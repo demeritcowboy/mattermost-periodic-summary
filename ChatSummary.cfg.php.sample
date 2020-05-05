@@ -21,3 +21,10 @@ $CHAT_SUMMARY_MAIL_RECIPIENT = 'your_email@example.com';
 // Cache directory to store data between runs.
 // There's nothing sensitive in here or that needs its own dedicated folder. It could just be /tmp.
 $CHAT_SUMMARY_CACHE_DIR = '/usr/local/tmp/chat_summary_cache';
+
+// If there's no posts since last time, should it send the email?
+// If you're using this with a short frequency, you might want to set this to
+// false. If you're using it with a long frequency, I like to get these since
+// otherwise there's no easy way to tell the difference between whether it
+// failed or whether it was just empty.
+$CHAT_SUMMARY_SEND_ON_EMPTY = true;

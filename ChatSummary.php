@@ -8,7 +8,7 @@ require_once 'ChatSummary.cfg.php';
 $cookie_file_path = null;
 
 function getPosts() {
-    global $CHAT_SUMMARY_URL, $CHAT_SUMMARY_TEAM_NAME, $CHAT_SUMMARY_LOGIN_STRING, $CHAT_SUMMARY_CUTOFF, $CHAT_SUMMARY_MAIL_FROM, $CHAT_SUMMARY_MAIL_RECIPIENT;
+    global $CHAT_SUMMARY_URL, $CHAT_SUMMARY_TEAM_NAME, $CHAT_SUMMARY_LOGIN_STRING, $CHAT_SUMMARY_CUTOFF, $CHAT_SUMMARY_MAIL_FROM, $CHAT_SUMMARY_MAIL_RECIPIENT, $CHAT_SUMMARY_SEND_ON_EMPTY;
     global $cookie_file_path;
 
     $curl = curl_init();
@@ -158,14 +158,16 @@ function getPosts() {
 
     curl_close($curl);
 
-    if (mail(
-        $CHAT_SUMMARY_MAIL_RECIPIENT,
-        "Chat Summary",
-        implode("\r\n", $mail_body),
-        "From: {$CHAT_SUMMARY_MAIL_FROM}\r\nContent-Type: text/plain",
-        "-f{$CHAT_SUMMARY_MAIL_FROM}"
-        ) === FALSE) {
-            return "Error sending mail.";
+    if (!empty($mail_body) || $CHAT_SUMMARY_SEND_ON_EMPTY) {
+        if (mail(
+            $CHAT_SUMMARY_MAIL_RECIPIENT,
+            "Chat Summary",
+            implode("\r\n", $mail_body),
+            "From: {$CHAT_SUMMARY_MAIL_FROM}\r\nContent-Type: text/plain",
+            "-f{$CHAT_SUMMARY_MAIL_FROM}"
+            ) === FALSE) {
+                return "Error sending mail.";
+        }
     }
 
     setCache($user_id_cache);
